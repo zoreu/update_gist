@@ -1,0 +1,33 @@
+name: Selenium Test
+on:
+  push:
+    branches:
+      - main # Substitua "main" pelo nome da branch em que deseja acionar o teste
+
+jobs:
+  selenium-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x # Substitua "3.x" pela versão do Python desejada
+
+      - name: Install Chrome WebDriver
+        run: |
+          LATEST=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+
+      - name: Install Selenium and other dependencies
+        run: pip install selenium
+        
+      - name: Install Js2Py
+        run: pip install Js2Py       
+
+      - name: Run Selenium Test
+        run: python chan_manager.py
