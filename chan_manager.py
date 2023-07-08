@@ -119,9 +119,8 @@ def update_gist(gist_id, github_token, file_name, file_content):
 gist_origem = sys.argv[1] # origem
 gist_id = sys.argv[2] # destino
 github_token = sys.argv[3] # token
-file_name = "servidor1_destino.txt"
+file_name = "canais_servidor1.txt"
 # Conteúdo do arquivo a ser gerado
 file_content = update_chan(gist_origem)
 # Chamada da função para atualizar o Gist
 update_gist(gist_id, github_token, file_name, file_content)
-
