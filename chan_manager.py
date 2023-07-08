@@ -1,5 +1,7 @@
+import sys
 import re
 import base64
+import requests
 from urllib.parse import urlparse, parse_qs, quote, unquote, quote_plus, unquote_plus, urlencode
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -8,7 +10,6 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 def web_bot(url,headers2):
     headers.update(headers2)
     from selenium import webdriver
-    webdriver_path = "./chromedriver"
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument(f"--headers={headers}")
@@ -85,7 +86,42 @@ def make_url(chann):
     js2py.disable_pyimport()
     context.execute(script)
     url = context.Clappr.results['source'] + '|User-Agent=' + quote(headers['User-Agent']) + '&Origin=' + quote(origin) + '&Referer=' + quote(referer)
-    texto_base64 = base64.b64encode(url.encode("utf-8")).decode("utf-8")
-    print(texto_base64)
+    #texto_base64 = base64.b64encode(url.encode("utf-8")).decode("utf-8")
+    return url
 
-make_url('megapix')
+#make_url('megapix')
+def update_chan(gist_origem):
+    r = requests.get(gist_origem)
+    src = r.text
+    final = src.replace('megapix_special',make_url('megapix'))
+    return final
+
+def update_gist(gist_id, github_token, file_name, file_content):
+    headers = {
+        "Authorization": f"Bearer {github_token}"
+    }
+    api_url = f"https://api.github.com/gists/{gist_id}"
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        gist_data = response.json()
+        gist_data["files"][file_name] = {"content": file_content}
+        response = requests.patch(api_url, headers=headers, json=gist_data)
+        
+        if response.status_code == 200:
+            print("Gist updated successfully.")
+        else:
+            print(f"Failed to update Gist: {response.status_code} - {response.text}")
+    else:
+        print(f"Failed to fetch Gist: {response.status_code} - {response.text}")
+
+# Configurações
+gist_origem = sys.argv[1] # origem
+gist_id = sys.argv[2] # destino
+github_token = sys.argv[3] # token
+file_name = "servidor1_destino.txt"
+# Conteúdo do arquivo a ser gerado
+file_content = update_chan(gist_origem)
+# Chamada da função para atualizar o Gist
+update_gist(gist_id, github_token, file_name, file_content)
+
