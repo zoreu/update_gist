@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x # Substitua "3.x" pela versão do Python desejada
+          python-version: 3.9 # Substitua "3.x" pela versão do Python desejada
 
       - name: Install Chrome WebDriver
         run: |
@@ -27,7 +27,11 @@ jobs:
         run: pip install selenium
         
       - name: Install Js2Py
-        run: pip install Js2Py       
-
-      - name: Run Selenium Test
-        run: python chan_manager.py
+        run: pip install Js2Py
+        
+      - name: Install requests
+        run: pip install requests
+        
+      - name: Update Gist
+        run: |
+          python chan_manager.py ${{ secrets.GIST_ORIGEM }} ${{ secrets.GISTID_DESTINO }} ${{ secrets.GH_TOKEN }}        
