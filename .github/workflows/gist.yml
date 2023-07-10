@@ -2,7 +2,9 @@ name: Selenium Test
 on:
   push:
     branches:
-      - main # Substitua "main" pelo nome da branch em que deseja acionar o teste
+      - main
+  schedule:
+    - cron: "0 */4 * * *"
 
 jobs:
   selenium-test:
