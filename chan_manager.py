@@ -187,7 +187,7 @@ def update_chan(gist_origem):
     if 'universaltv_special' in src:
         print('gerando universaltv')
         src = src.replace('universaltv_special',make_url('universaltv'))
-    if 'discoverychannel' in src:
+    if 'discoverychannel_special' in src:
         print('gerando discoverychannel')
         src = src.replace('discoverychannel_special',make_url('discoverychannel'))
     if 'cartoonnetwork_special' in src:
