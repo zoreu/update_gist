@@ -176,7 +176,7 @@ def update_chan(gist_origem):
         print('gerando warnertv')
         src = src.replace('warnertv_special',make_url('warnertv'))
     if 'history_special' in src:
-        print('gerando warnertv')
+        print('gerando history')
         src = src.replace('history_special',make_url('history'))
     if 'sbt_special' in src:
         print('gerando sbt')
